@@ -15,31 +15,23 @@ public class MouseOrbitalMotion : MonoBehaviour
     float mouseVerticalInput = 0f;
     float mouseHorizontalInput = 0f;
 
-    private void Awake() {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
     private void Update() {
         mouseWheelInput = Input.GetAxis("Mouse ScrollWheel");
         mouseVerticalInput = Input.GetAxis("Mouse Y");
         mouseHorizontalInput = Input.GetAxis("Mouse X");
-
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            Cursor.lockState = CursorLockMode.None;
-        }
     }
 
     private void LateUpdate() {
-        if (Cursor.lockState != CursorLockMode.Locked) {
-            return;
+        if (Input.GetMouseButton(1)) {
+            transform.RotateAround(target.position, transform.right, mouseVerticalInput * mouseVerticalSensitivity);
+            transform.RotateAround(target.position, target.up, mouseHorizontalInput * mouseHorizontalSensitivity);
         }
-
-        transform.RotateAround(target.position, transform.right, mouseVerticalInput * mouseVerticalSensitivity);
-        transform.RotateAround(target.position, target.up, mouseHorizontalInput * mouseHorizontalSensitivity);
-        transform.LookAt(target, target.up);
-
         if (Vector3.Distance(transform.position, target.position) > minimumZoom) {
-            transform.Translate(transform.forward * -mouseWheelInput * mouseWheelSensitivity, Space.Self);
+            transform.LookAt(target, transform.up);
+            transform.Translate(transform.forward * mouseWheelInput * mouseWheelSensitivity, Space.World);
+        } else {
+            transform.LookAt(target, transform.up);
+            transform.Translate(-transform.forward, Space.World);
         }
     }
 }
