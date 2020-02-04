@@ -5,17 +5,16 @@ using UnityEngine.EventSystems;
 
 public class SelectionSquare : MonoBehaviour, IPointerClickHandler
 {
-    public GameObject my_placement_object;
-    public GameObject ui_handler;
-
-    public void Start()
+    public GameObject myPlacementObject;
+    UIManager uiHandler;
+    private void Awake()
     {
-        ui_handler = GameObject.Find("UI_Manager");
+        uiHandler = FindObjectOfType<UIManager>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        ui_handler.GetComponent<UIManager>().placement_object_prefab = my_placement_object;
+        uiHandler.placementObjectPrefab = myPlacementObject;
     }
     
 }

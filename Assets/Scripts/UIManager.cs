@@ -6,18 +6,18 @@ using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject placement_object_prefab;
+    public GameObject placementObjectPrefab;
 
-    Ray mouse_ray;
+    Ray mouseRay;
     RaycastHit hit;
 
     GameObject tile;
 
-    GraphicRaycaster m_Raycaster;
-    PointerEventData m_PointerEventData;
-    EventSystem m_EventSystem;
+    GraphicRaycaster Raycaster;
+    PointerEventData PointerEventData;
+    EventSystem EventSystem;
 
-    public GameObject focused_placeholder;
+    public GameObject focusedPlaceholder;
 
     private void Start()
     {
@@ -31,18 +31,18 @@ public class UIManager : MonoBehaviour
 
     void ManageMouseHighlighter()
     {
-        mouse_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(mouse_ray, out hit))
+        if (Physics.Raycast(mouseRay, out hit))
         {
             if (hit.collider.gameObject.tag == "placeholder")
             {
-                focused_placeholder = hit.collider.gameObject;
+                focusedPlaceholder = hit.collider.gameObject;
             }
         }
         else
         {
-            focused_placeholder = null;
+            focusedPlaceholder = null;
         }
     }
 
@@ -50,13 +50,14 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if(focused_placeholder && placement_object_prefab)
+            if(focusedPlaceholder && placementObjectPrefab)
             {
                 // place the object prefab in the placeholder.
-                if(focused_placeholder.GetComponent<Placeholder>().type == placement_object_prefab.GetComponent<Placeable>().type)
+                if(focusedPlaceholder.GetComponent<Placeholder>().type == placementObjectPrefab.GetComponent<Placeable>().type && focusedPlaceholder.GetComponent<Placeholder>().occupied == false)
                 {
-                    GameObject temp = Instantiate(placement_object_prefab);
-                    temp.transform.position = new Vector3(focused_placeholder.transform.position.x, focused_placeholder.transform.position.y, focused_placeholder.transform.position.z);
+                    GameObject temp = Instantiate(placementObjectPrefab);
+                    temp.transform.position = new Vector3(focusedPlaceholder.transform.position.x, focusedPlaceholder.transform.position.y, focusedPlaceholder.transform.position.z);
+                    focusedPlaceholder.GetComponent<Placeholder>().occupied = true;
                 }
                 
             }
