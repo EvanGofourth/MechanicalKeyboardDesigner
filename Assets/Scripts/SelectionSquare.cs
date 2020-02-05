@@ -5,16 +5,12 @@ using UnityEngine.EventSystems;
 
 public class SelectionSquare : MonoBehaviour, IPointerClickHandler
 {
-    public GameObject myPlacementObject;
-    UIManager uiHandler;
-    private void Awake()
-    {
-        uiHandler = FindObjectOfType<UIManager>();
-    }
+    public GameObject placementPrefab;
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        uiHandler.placementObjectPrefab = myPlacementObject;
+        GameObject cursorPlacementObject = GameObject.Instantiate(placementPrefab);
+        cursorPlacementObject.AddComponent<AttachToCursor>();
     }
     
 }

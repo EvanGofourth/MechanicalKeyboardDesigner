@@ -34,4 +34,8 @@ public class MouseOrbitalMotion : MonoBehaviour
             transform.Translate(-transform.forward, Space.World);
         }
     }
+
+    public float GetDistanceFromTarget() {
+        return Vector3.Distance(target.position, transform.position);
+    }
 }
